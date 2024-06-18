@@ -187,10 +187,10 @@ $(window).on("load",function (){
 
 
     // contact form
-    $(document).ready(function () {
-        $('#contact-form').validator();
+    $(document).ready(function() {
+        $('#contact-form').validator(); // Assuming you have included the necessary validator library
     
-        $('#contact-form').on('submit', function (e) {
+        $('#contact-form').on('submit', function(e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault(); // Prevent the default form submission
                 
@@ -202,23 +202,23 @@ $(window).on("load",function (){
                     url: url,
                     data: formData,
                     dataType: 'json', // Expect JSON response
-                    success: function (data) {
+                    success: function(data) {
                         var messageAlert = 'alert-' + data.type;
                         var messageText = data.message;
     
                         var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable">' +
                             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
                             messageText + '</div>';
-                        
+    
                         if (messageAlert && messageText) {
                             $('#contact-form').find('.messages').html(alertBox);
                             $('#contact-form')[0].reset();
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         var messageAlert = 'alert-danger';
                         var messageText = 'There was an error. Please try again later.';
-                        
+    
                         var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable">' +
                             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
                             messageText + '</div>';
@@ -229,6 +229,7 @@ $(window).on("load",function (){
             }
         });
     });
+    
     
     
     // $('#contact-form').validator();

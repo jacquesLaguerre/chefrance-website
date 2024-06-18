@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 $from = 'Demo contact form <demo@domain.com>';
 $sendTo = 'Demo contact form <info@chef-france.com>';
 $subject = 'New message from contact form';
-$fields = array('name' => 'Name', 'subject' => 'Subject', 'email' => 'Email', 'message' => 'Message');
+$fields = array('name' => 'Name', 'email' => 'Email', 'message' => 'Message');
 $okMessage = 'Contact form successfully submitted. Thank you, I will get back to you soon!';
 $errorMessage = 'There was an error while submitting the form. Please try again later';
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $headers = array(
             'Content-Type: text/plain; charset="UTF-8";',
             'From: ' . $from,
-            'Reply-To: ' . $from,
+            'Reply-To: ' . $_POST['email'],
             'Return-Path: ' . $from,
         );
 
