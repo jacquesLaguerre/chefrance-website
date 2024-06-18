@@ -187,31 +187,72 @@ $(window).on("load",function (){
 
 
     // contact form
-    $('#contact-form').validator();
-
-    $('#contact-form').on('submit', function (e) {
-        if (!e.isDefaultPrevented()) {
-            var url = "contact.php";
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: $(this).serialize(),
-                success: function (data)
-                {
-                    var messageAlert = 'alert-' + data.type;
-                    var messageText = data.message;
-
-                    var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + messageText + '</div>';
-                    if (messageAlert && messageText) {
+    $(document).ready(function () {
+        $('#contact-form').validator();
+    
+        $('#contact-form').on('submit', function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault(); // Prevent the default form submission
+                
+                var url = "contact.php";
+    
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        var messageAlert = 'alert-' + data.type;
+                        var messageText = data.message;
+    
+                        var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+                            messageText + '</div>';
+                        
+                        if (messageAlert && messageText) {
+                            $('#contact-form').find('.messages').html(alertBox);
+                            $('#contact-form')[0].reset();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        var messageAlert = 'alert-danger';
+                        var messageText = 'There was an error. Please try again later.';
+                        
+                        var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+                            messageText + '</div>';
+    
                         $('#contact-form').find('.messages').html(alertBox);
-                        $('#contact-form')[0].reset();
                     }
-                }
-            });
-            return false;
-        }
+                });
+            }
+        });
     });
+    
+    // $('#contact-form').validator();
+
+    // $('#contact-form').on('submit', function (e) {
+    //     if (!e.isDefaultPrevented()) {
+    //         var url = "contact.php";
+
+    //         $.ajax({
+    //             type: "POST",
+    //             url: url,
+    //             data: $(this).serialize(),
+    //             success: function (data)
+    //             {
+    //                 var messageAlert = 'alert-' + data.type;
+    //                 var messageText = data.message;
+
+    //                 var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + messageText + '</div>';
+    //                 if (messageAlert && messageText) {
+    //                     $('#contact-form').find('.messages').html(alertBox);
+    //                     $('#contact-form')[0].reset();
+    //                 }
+    //             }
+    //         });
+    //         return false;
+    //     }
+    // });
 
 });
 

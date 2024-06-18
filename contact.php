@@ -1,14 +1,16 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // configure
 $from = 'Demo contact form <demo@domain.com>';
-$sendTo = 'Demo contact form <info@chef-france.com>'; // Correct email format
+$sendTo = 'Demo contact form <info@chef-france.com>';
 $subject = 'New message from contact form';
-$fields = array('name' => 'Name', 'subject' => 'Subject', 'email' => 'Email', 'message' => 'Message'); // array variable name => Text to appear in the email
+$fields = array('name' => 'Name', 'subject' => 'Subject', 'email' => 'Email', 'message' => 'Message');
 $okMessage = 'Contact form successfully submitted. Thank you, I will get back to you soon!';
 $errorMessage = 'There was an error while submitting the form. Please try again later';
 
-// Check if request method is POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $emailText = "You have a new message from the contact form\n=============================\n";
@@ -35,14 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $responseArray = array('type' => 'danger', 'message' => $errorMessage);
     }
 
-    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-        header('Content-Type: application/json');
-        echo json_encode($responseArray);
-    } else {
-        echo $responseArray['message'];
-    }
+    header('Content-Type: application/json');
+    echo json_encode($responseArray);
 } else {
     header($_SERVER["SERVER_PROTOCOL"] . " 405 Method Not Allowed", true, 405);
-    echo "Method Not Allowed";
+    echo json_encode(array('type' => 'danger', 'message' => 'Method Not Allowed'));
 }
 ?>
