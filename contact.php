@@ -26,17 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'Return-Path: ' . $from,
         );
 
-        mail($sendTo, $subject, $emailText, implode("\n", $headers));
-
-        $responseArray = array('type' => 'success', 'message' => $okMessage);
-    } catch (\Exception $e) {
+        if (mail($sendTo, $subject, $emailText, implode("\n", $headers))) {
+            $responseArray = array('type' => 'success', 'message' => $okMessage);
+        } else {
+            throw new Exception('Mail failed');
+        }
+    } catch (Exception $e) {
         $responseArray = array('type' => 'danger', 'message' => $errorMessage);
     }
 
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-        $encoded = json_encode($responseArray);
         header('Content-Type: application/json');
-        echo $encoded;
+        echo json_encode($responseArray);
     } else {
         echo $responseArray['message'];
     }
@@ -44,3 +45,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header($_SERVER["SERVER_PROTOCOL"] . " 405 Method Not Allowed", true, 405);
     echo "Method Not Allowed";
 }
+?>
