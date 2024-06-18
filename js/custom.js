@@ -195,11 +195,13 @@ $(window).on("load",function (){
                 e.preventDefault(); // Prevent the default form submission
                 
                 var url = "contact.php";
+                var formData = $(this).serialize();
     
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: $(this).serialize(),
+                    data: formData,
+                    dataType: 'json', // Expect JSON response
                     success: function (data) {
                         var messageAlert = 'alert-' + data.type;
                         var messageText = data.message;
@@ -227,6 +229,7 @@ $(window).on("load",function (){
             }
         });
     });
+    
     
     // $('#contact-form').validator();
 
